@@ -22,18 +22,8 @@ public class Frequency {
 
     }
 
-    private void validate() throws Exception {
-        if (Objects.equals(this.text, "")) {
-            System.err.println("Text must be set");
-            throw new Exception("Text must be set");
-        }
-        if (this.character == null) {
-            System.err.println("A character must be given");
-            throw new Exception("A character must be given");
-        }
-    }
-
     private Frequency run() {
+        this.reset();
 
         for (int i = 0; i < this.text.length(); i++) {
             Character currentCharacter = this.text.charAt(i);
@@ -61,6 +51,19 @@ public class Frequency {
         return this;
     }
 
+    private Frequency validate() throws Exception {
+        if (Objects.equals(this.text, "")) {
+            System.err.println("Text must be set");
+            throw new Exception("Text must be set");
+        }
+        if (this.character == null) {
+            System.err.println("A character must be given");
+            throw new Exception("A character must be given");
+        }
+
+        return this;
+    }
+
     public Frequency analyze(String text) {
         this.text = text;
 
@@ -69,17 +72,39 @@ public class Frequency {
 
     public Frequency find(Character character) {
         this.character = character;
+
         return this;
     }
 
     Frequency toPercentage() {
         this.percentage = true;
+
         return this;
     }
 
+    private void reset() {
+        this.totalCount = 0;
+        map.clear();
+        this.percentage = false;
+    }
+
     public float get() throws Exception {
-        this.validate();
-        this.run();
-        return (this.percentage) ? (this.map.get(this.character) *100.0f / this.totalCount) : this.map.get(this.character);
+        float out;
+
+        this.validate().run();
+
+        if (this.map.containsKey(this.character)) {
+            if (this.percentage) {
+                out = (this.map.get(this.character) * 100.0f / this.totalCount);
+            } else {
+                out = this.map.get(this.character);
+            }
+        }else{
+            out = 0;
+        }
+
+        this.reset();
+
+        return out;
     }
 }

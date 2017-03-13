@@ -21,9 +21,28 @@ public class FrequencyTest {
 
         text = "This is a random text. This text is used to test the frequency of letters";
         assertEquals(4.0, Analyzer.analyze(text).find('i').get());
-        exception.expect(Exception.class);
-        exception.expectMessage("Text must be set");
-        Analyzer.find('i').get();
+        assertNotEquals(3.0,Analyzer.analyze(text).find('i').get());
+
+        text = "Rules were called Interceptors when they made their";
+        assertEquals(1.0, Analyzer.analyze(text).find('i').get());
+
+        text = "More information on these features is available in the JUnit 4.7 release notes.  Hamcrest 1.2 support was listed in earlier";
+        assertEquals(9.0, Analyzer.analyze(text).find('i').get());
+
+        text = "While you're waiting for the final release, you can download the release candidate from github, browse org.junit.rules gear";
+        assertEquals(7.0, Analyzer.analyze(text).find('i').get());
+
+        text = "I've written TemporaryFolder-like code lots of times, so I'm definitely looking forward to this. Although, I admit that there are places I'd like more customization -- such as if a temporary folder is needed for some test ";
+        assertEquals(13.0, Analyzer.analyze(text).find('i').get());
+
+        text = "a";
+        assertEquals(0.0, Analyzer.analyze(text).find('i').get());
+
+        try {
+            Analyzer.find('i').get();
+        } catch (Exception e) {
+            assertEquals("Text is not set", e.getMessage());
+        }
 
     }
 
