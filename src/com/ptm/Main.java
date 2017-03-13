@@ -6,7 +6,6 @@ public class Main {
         Frequency Analyzer = new Frequency();
         String text;
         text = "This is a random text. This text is used to test the frequency of letters";
-//	    System.out.println(Analyzer.getFrequencyOf('i',text,true));
         try {
             float result = Analyzer.analyze(text).find('i').get();
             System.out.println(result);
