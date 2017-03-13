@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-class Frequency {
+public class Frequency {
 
     private Map<Character, Integer> map = new HashMap<>();
     private String text = "";
@@ -12,13 +12,14 @@ class Frequency {
     private boolean percentage = false;
     private int totalCount = 0;
 
-    Frequency() {
+    public Frequency() {
     }
 
-    Frequency(String text, Character character, boolean percentage) {
+    public Frequency(String text, Character character, boolean percentage) {
         this.text = text;
         this.character = character;
         this.percentage = percentage;
+
     }
 
     private void validate() throws Exception {
@@ -60,13 +61,13 @@ class Frequency {
         return this;
     }
 
-    Frequency analyze(String text) {
+    public Frequency analyze(String text) {
         this.text = text;
 
         return this;
     }
 
-    Frequency find(Character character) {
+    public Frequency find(Character character) {
         this.character = character;
         return this;
     }
@@ -76,7 +77,7 @@ class Frequency {
         return this;
     }
 
-    float get() throws Exception {
+    public float get() throws Exception {
         this.validate();
         this.run();
         return (this.percentage) ? (this.map.get(this.character) *100.0f / this.totalCount) : this.map.get(this.character);
