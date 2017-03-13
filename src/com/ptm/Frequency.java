@@ -4,73 +4,81 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Created by tudor on 3/13/2017.
- */
-public class Frequency {
+class Frequency {
 
-    private Map<Character, Integer> map = new HashMap<Character, Integer>();
+    private Map<Character, Integer> map = new HashMap<>();
     private String text = "";
-    private Character character;
-    public int totalCount = 0;
+    private Character character = null;
+    private boolean percentage = false;
+    private int totalCount = 0;
 
-    public void Frequency() {
+    Frequency() {
     }
 
-    public void Frequency(String text) {
+    Frequency(String text, Character character, boolean percentage) {
         this.text = text;
+        this.character = character;
+        this.percentage = percentage;
     }
 
-    private Frequency analyze() {
-        if(Objects.equals(this.text, "")){
-            System.err.println("Text is empty");
-            System.exit(255);
+    private void validate() throws Exception {
+        if (Objects.equals(this.text, "")) {
+            System.err.println("Text must be set");
+            throw new Exception("Text must be set");
         }
+        if (this.character == null) {
+            System.err.println("A character must be given");
+            throw new Exception("A character must be given");
+        }
+    }
+
+    private Frequency run() {
 
         for (int i = 0; i < this.text.length(); i++) {
+            Character currentCharacter = this.text.charAt(i);
+            if (currentCharacter.equals(' ')) {
+                continue;
+            }
+
             this.totalCount++; //This is the total number of characters we've found in the output
 
             Integer countForCharacter = 0;
             //check in map if we have a count for this character
-            if (map.containsKey(character)) {
+            if (map.containsKey(currentCharacter)) {
                 //get the current count we have for this character
-                countForCharacter = map.get(this.character);
+                countForCharacter = map.get(currentCharacter);
                 //increment
                 countForCharacter++;
                 //increment the count
             } else {
                 countForCharacter = 1;
             }
-
             //Now put the up to date count into the map
-            map.put(this.character, countForCharacter);
+            map.put(currentCharacter, countForCharacter);
         }
 
         return this;
     }
 
-
-    public int getFrequencyOf(Character character) {
-
-        return this.getFrequencyOf(character, false);
-    }
-
-    public int getFrequencyOf(Character character, String text) {
+    Frequency analyze(String text) {
         this.text = text;
 
-        return this.getFrequencyOf(character, false);
+        return this;
     }
 
-    public double getFrequencyOf(Character character, String text, boolean percentage) {
-        this.text = text;
-
-        return this.getFrequencyOf(character, percentage);
-    }
-
-    public double getFrequencyOf(Character character, boolean percentage) {
+    Frequency find(Character character) {
         this.character = character;
-        this.analyze();
+        return this;
+    }
 
-        return (percentage) ? this.map.get(character) : this.map.get(character) / this.totalCount;
+    Frequency toPercentage() {
+        this.percentage = true;
+        return this;
+    }
+
+    float get() throws Exception {
+        this.validate();
+        this.run();
+        return (this.percentage) ? (this.map.get(this.character) *100.0f / this.totalCount) : this.map.get(this.character);
     }
 }
