@@ -1,9 +1,7 @@
 package com.ptm.tests;
 
 import com.ptm.Frequency;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,39 +10,52 @@ public class FrequencyTest {
     private Frequency Analyzer = new Frequency();
     private String text;
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
-
     @Test
     public void test_frequency_of_letters() throws Exception {
 
-        text = "This is a random text. This text is used to test the frequency of letters";
-        assertEquals(4.0, Analyzer.analyze(text).find('i').get());
-        assertNotEquals(3.0,Analyzer.analyze(text).find('i').get());
-
-        text = "Rules were called Interceptors when they made their";
-        assertEquals(1.0, Analyzer.analyze(text).find('i').get());
-
-        text = "More information on these features is available in the JUnit 4.7 release notes.  Hamcrest 1.2 support was listed in earlier";
-        assertEquals(9.0, Analyzer.analyze(text).find('i').get());
-
-        text = "While you're waiting for the final release, you can download the release candidate from github, browse org.junit.rules gear";
-        assertEquals(7.0, Analyzer.analyze(text).find('i').get());
-
-        text = "I've written TemporaryFolder-like code lots of times, so I'm definitely looking forward to this. Although, I admit that there are places I'd like more customization -- such as if a temporary folder is needed for some test ";
-        assertEquals(13.0, Analyzer.analyze(text).find('i').get());
-
-        text = "a";
-        assertEquals(0.0, Analyzer.analyze(text).find('i').get());
+        text = "I've written TemporaryFolder-like code lots of times, so I'm definitely looking forward to this. Although, " +
+                "I admit that there are places I'd like more customization -- such as if a temporary folder is needed for some test ";
+        assertEquals(6.0, Analyzer.analyze(text).find('f').getFrequency());
+        assertNotEquals(3.0,Analyzer.analyze(text).find('e').getFrequency());
+        assertEquals(9.0, Analyzer.analyze(text).find('d').getFrequency());
+        assertEquals(4.0, Analyzer.analyze(text).find('c').getFrequency());
+        assertEquals(0.0, Analyzer.analyze(text).find('b').getFrequency());
+        assertEquals(10.0, Analyzer.analyze(text).find('a').getFrequency());
+        assertEquals(0.0, Analyzer.analyze(text).find(' ').getFrequency());
 
         try {
-            Analyzer.find('i').get();
+            Analyzer.find('i').getFrequency();
         } catch (Exception e) {
             assertEquals("Text is not set", e.getMessage());
         }
 
     }
 
-
+    @Test
+    public void test_frequency_in_percentage_of_letters() throws Exception {
+        text = "I've written TemporaryFolder-like code lots of times, so I'm definitely looking forward to this. Although, " +
+                "I admit that there are places I'd like more customization -- such as if a temporary folder is needed for some test ";
+        Frequency Analyzer2 = new Frequency(text,'f',true);
+        assertEquals(3.2432432174682617, Analyzer2.getFrequency());
+        assertNotEquals(12.5,Analyzer2.find('e').toPercentage().getFrequency());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

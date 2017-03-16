@@ -23,7 +23,6 @@ public class Frequency {
     }
 
     private Frequency run() {
-        this.reset();
 
         for (int i = 0; i < this.text.length(); i++) {
             Character currentCharacter = this.text.charAt(i);
@@ -36,7 +35,7 @@ public class Frequency {
             Integer countForCharacter = 0;
             //check in map if we have a count for this character
             if (map.containsKey(currentCharacter)) {
-                //get the current count we have for this character
+                //getFrequency the current count we have for this character
                 countForCharacter = map.get(currentCharacter);
                 //increment
                 countForCharacter++;
@@ -76,7 +75,7 @@ public class Frequency {
         return this;
     }
 
-    Frequency toPercentage() {
+    public Frequency toPercentage() {
         this.percentage = true;
 
         return this;
@@ -88,7 +87,7 @@ public class Frequency {
         this.percentage = false;
     }
 
-    public float get() throws Exception {
+    public float getFrequency() throws Exception {
         float out;
 
         this.validate().run();
